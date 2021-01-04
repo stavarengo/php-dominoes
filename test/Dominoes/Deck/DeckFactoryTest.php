@@ -4,34 +4,34 @@ declare(strict_types=1);
 
 namespace Deck;
 
-use Dominoes\Deck\Exception\TheHigherPipMustBeZeroOrHigher;
-use Dominoes\Deck\TilesGenerator;
+use Dominoes\Deck\Exception\TheHighestPipMustBeZeroOrHigher;
+use Dominoes\Deck\DeckFactory;
 use Dominoes\Tile\TileInterface;
 use PHPUnit\Framework\TestCase;
 
-class TilesGeneratorTest extends TestCase
+class DeckFactoryTest extends TestCase
 {
-    public function testNegativeHigherPip()
+    public function testNegativeHighestPip()
     {
-        $higherPip = -1;
-        $this->expectExceptionObject(TheHigherPipMustBeZeroOrHigher::create($higherPip));
+        $highestPip = -1;
+        $this->expectExceptionObject(TheHighestPipMustBeZeroOrHigher::create($highestPip));
 
-        (new TilesGenerator())->createTiles($higherPip);
+        (new DeckFactory())->createDeck($highestPip);
     }
 
     /**
      * @dataProvider createTilesDataProvider
      */
-    public function testCreateTiles(int $higherPip, array $expectedTiles)
+    public function testCreateDeck(int $highestPip, array $expectedTiles)
     {
-        $tiles = (new TilesGenerator())->createTiles($higherPip);
+        $deck = (new DeckFactory())->createDeck($highestPip);
 
-        $this->assertCount(count($expectedTiles), $tiles);;
+        $this->assertEquals(count($expectedTiles), $deck->countTiles());
 
         // Convert the tiles to String to make it easy to compare to the expected result
         $tilesResult = array_map(
             fn(TileInterface $tile) => sprintf('%s:%s', $tile->getLeftPip(), $tile->getRightPip()),
-            $tiles
+            $deck->drawRandomTiles($deck->countTiles())
         );
         sort($tilesResult);
 
