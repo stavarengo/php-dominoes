@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class DeckTest extends TestCase
 {
     /**
-     * @dataProvider countDataProvider
+     * @dataProvider tilesDataProvider
      */
     public function testCountTiles(array $tiles)
     {
@@ -40,7 +40,24 @@ class DeckTest extends TestCase
         $deck->drawRandomTile();
     }
 
-    public function countDataProvider()
+    public function testDrawRandomTiles()
+    {
+        $allTiles = $this->createTiles(3);
+        $deck = new Deck(...$allTiles);
+
+        $drawCount = 2;
+        $drawTiles = $deck->drawRandomTiles($drawCount);
+
+        $this->assertEquals(1, $deck->countTiles());
+        $this->assertCount($drawCount, $drawTiles);
+        $this->assertContains($drawTiles[0], $allTiles);
+        $this->assertContains($drawTiles[1], $allTiles);
+
+        $this->expectExceptionObject(CantDrawFromAnEmptyDeck::create());
+        $deck->drawRandomTiles($deck->countTiles() + 1);
+    }
+
+    public function tilesDataProvider(): array
     {
         return [
             [[]],

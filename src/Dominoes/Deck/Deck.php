@@ -39,4 +39,14 @@ class Deck implements DeckInterface
 
         return $tile;
     }
+
+    public function drawRandomTiles(int $count): array
+    {
+        $tiles = [];
+        while (count($tiles) < $count) {
+            $tiles[] = $this->drawRandomTile();
+        }
+
+        return $tiles;
+    }
 }

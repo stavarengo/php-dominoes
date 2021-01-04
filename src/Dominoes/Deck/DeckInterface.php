@@ -22,4 +22,13 @@ interface DeckInterface
      *  If the deck is out of tiles.
      */
     public function drawRandomTile(): TileInterface;
+
+    /**
+     * @param int $count
+     *  How many tiles should be draw.
+     * @return TileInterface[]
+     * @throws CantDrawFromAnEmptyDeck
+     *  If $count is bigger than {@link #countTiles()}.
+     */
+    public function drawRandomTiles(int $count): array;
 }
