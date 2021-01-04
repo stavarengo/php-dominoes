@@ -22,7 +22,7 @@ class TilesCollectionTest extends TestCase
 
     public function testDrawRandomTile()
     {
-        $tiles = $this->createTiles(2);
+        $tiles = $this->createTilesStub(2);
         $expectedTilesLeft = count($tiles);
 
         $collection = new TilesCollection(...$tiles);
@@ -42,7 +42,7 @@ class TilesCollectionTest extends TestCase
 
     public function testDrawRandomTiles()
     {
-        $allTiles = $this->createTiles(3);
+        $allTiles = $this->createTilesStub(3);
         $collection = new TilesCollection(...$allTiles);
 
         $drawCount = 2;
@@ -55,6 +55,40 @@ class TilesCollectionTest extends TestCase
 
         $this->expectExceptionObject(CantDrawFromAnEmptyCollection::create());
         $collection->drawRandomTiles($collection->countTiles() + 1);
+    }
+
+    public function testGetTilesWithPips()
+    {
+        $collection = new TilesCollection(...[]);
+
+        $this->assertEmpty($collection->getTilesWithPips(0));
+
+        $collection = new TilesCollection(
+            $tileOneTwo = $this->createTileStub(1, 2),
+            $tileOneThree = $this->createTileStub(1, 3),
+            $tileFiveSix = $this->createTileStub(5, 6),
+            $tileSixSix = $this->createTileStub(6, 6),
+        );
+
+        $this->assertEmpty($collection->getTilesWithPips(0, 4));
+
+        $tiles = $collection->getTilesWithPips(5);
+        $this->assertCount(1, $tiles);
+        $this->assertSame($tileFiveSix, $tiles[0]);
+
+        $tiles = $collection->getTilesWithPips(2);
+        $this->assertCount(1, $tiles);
+        $this->assertSame($tileOneTwo, $tiles[0]);
+
+        $tiles = $collection->getTilesWithPips(6);
+        $this->assertCount(2, $tiles);
+        $this->assertContains($tileFiveSix, $tiles);
+        $this->assertContains($tileSixSix, $tiles);
+
+        $tiles = $collection->getTilesWithPips(3, 5);
+        $this->assertCount(2, $tiles);
+        $this->assertContains($tileOneThree, $tiles);
+        $this->assertContains($tileFiveSix, $tiles);
     }
 
     /**
@@ -70,8 +104,8 @@ class TilesCollectionTest extends TestCase
     {
         return [
             [[]],
-            [$this->createTiles(1)],
-            [$this->createTiles(5)],
+            [$this->createTilesStub(1)],
+            [$this->createTilesStub(5)],
         ];
     }
 
@@ -79,8 +113,18 @@ class TilesCollectionTest extends TestCase
      * @param int $howMuch
      * @return TileInterface[]
      */
-    private function createTiles(int $howMuch): array
+    private function createTilesStub(int $howMuch): array
     {
-        return array_map(fn() => $this->createStub(TileInterface::class), range(0, $howMuch - 1));
+        return array_map(fn(int $number) => $this->createTileStub($number, $number + 1), range(0, $howMuch - 1));
+    }
+
+    private function createTileStub(int $left, int $right): TileInterface
+    {
+        $tile = $this->createStub(TileInterface::class);
+        $tile->method('getId')->willReturn("$left:$right");
+        $tile->method('getLeftPip')->willReturn($left);
+        $tile->method('getRightPip')->willReturn($right);
+
+        return $tile;
     }
 }

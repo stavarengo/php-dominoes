@@ -35,4 +35,10 @@ interface TilesCollectionInterface
      * @return TileInterface[]
      */
     public function getItems(): array;
+
+    /**
+     * @param int ...$pips
+     * @return TileInterface[]
+     */
+    public function getTilesWithPips(int ...$pips): array;
 }

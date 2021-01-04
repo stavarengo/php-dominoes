@@ -52,4 +52,16 @@ class TilesCollection implements TilesCollectionInterface
     {
         return $this->tiles;
     }
+
+    public function getTilesWithPips(int ...$pips): array
+    {
+        $tiles = [];
+        foreach ($this->tiles as $tile) {
+            if (in_array($tile->getLeftPip(), $pips) || in_array($tile->getRightPip(), $pips)) {
+                $tiles[$tile->getId()] = $tile;
+            }
+        }
+
+        return array_values($tiles);
+    }
 }
