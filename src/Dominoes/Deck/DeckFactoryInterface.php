@@ -7,6 +7,7 @@ namespace Dominoes\Deck;
 
 
 use Dominoes\Deck\Exception\TheHighestPipMustBeZeroOrHigher;
+use Dominoes\Tile\TilesCollectionInterface;
 
 interface DeckFactoryInterface
 {
@@ -16,9 +17,9 @@ interface DeckFactoryInterface
      * @param int $highestPip
      *  Must be zero or bigger.
      *
-     * @return DeckInterface
+     * @return TilesCollectionInterface
      *
      * @throws TheHighestPipMustBeZeroOrHigher If $highestPip is less than zero.
      */
-    public function createDeck(int $highestPip): DeckInterface;
+    public function createDeck(int $highestPip): TilesCollectionInterface;
 }

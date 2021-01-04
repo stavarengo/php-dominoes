@@ -7,10 +7,12 @@ namespace Dominoes\Deck;
 
 
 use Dominoes\Tile\Tile;
+use Dominoes\Tile\TilesCollection;
+use Dominoes\Tile\TilesCollectionInterface;
 
 class DeckFactory implements DeckFactoryInterface
 {
-    public function createDeck(int $highestPip): DeckInterface
+    public function createDeck(int $highestPip): TilesCollectionInterface
     {
         if ($highestPip < 0) {
             throw Exception\TheHighestPipMustBeZeroOrHigher::create($highestPip);
@@ -24,7 +26,7 @@ class DeckFactory implements DeckFactoryInterface
             }
         }
 
-        return new Deck(...$tiles);
+        return new TilesCollection(...$tiles);
     }
 
 }

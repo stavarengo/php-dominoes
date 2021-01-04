@@ -3,12 +3,10 @@
 declare(strict_types=1);
 
 
-namespace Dominoes\Deck;
+namespace Dominoes\Tile;
 
 
-use Dominoes\Tile\TileInterface;
-
-class Deck implements DeckInterface
+class TilesCollection implements TilesCollectionInterface
 {
     /**
      * @var TileInterface[]
@@ -28,7 +26,7 @@ class Deck implements DeckInterface
     public function drawRandomTile(): TileInterface
     {
         if ($this->countTiles() === 0) {
-            throw Exception\CantDrawFromAnEmptyDeck::create();
+            throw Exception\CantDrawFromAnEmptyCollection::create();
         }
 
         $key = mt_rand(0, $this->countTiles() - 1);
@@ -40,13 +38,18 @@ class Deck implements DeckInterface
         return $tile;
     }
 
-    public function drawRandomTiles(int $count): array
+    public function drawRandomTiles(int $count): TilesCollectionInterface
     {
         $tiles = [];
         while (count($tiles) < $count) {
             $tiles[] = $this->drawRandomTile();
         }
 
-        return $tiles;
+        return new self(...$tiles);
+    }
+
+    public function getItems(): array
+    {
+        return $this->tiles;
     }
 }

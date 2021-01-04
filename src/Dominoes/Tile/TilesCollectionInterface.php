@@ -3,13 +3,10 @@
 declare(strict_types=1);
 
 
-namespace Dominoes\Deck;
+namespace Dominoes\Tile;
 
 
-use Dominoes\Deck\Exception\CantDrawFromAnEmptyDeck;
-use Dominoes\Tile\TileInterface;
-
-interface DeckInterface
+interface TilesCollectionInterface
 {
     public function countTiles(): int;
 
@@ -18,7 +15,7 @@ interface DeckInterface
      *
      * @return TileInterface
      *
-     * @throws CantDrawFromAnEmptyDeck
+     * @throws Exception\CantDrawFromAnEmptyCollection
      *  If the deck is out of tiles.
      */
     public function drawRandomTile(): TileInterface;
@@ -26,9 +23,16 @@ interface DeckInterface
     /**
      * @param int $count
      *  How many tiles should be draw.
-     * @return TileInterface[]
-     * @throws CantDrawFromAnEmptyDeck
+     *
+     * @return TilesCollectionInterface
+     *
+     * @throws Exception\CantDrawFromAnEmptyCollection
      *  If $count is bigger than {@link #countTiles()}.
      */
-    public function drawRandomTiles(int $count): array;
+    public function drawRandomTiles(int $count): TilesCollectionInterface;
+
+    /**
+     * @return TileInterface[]
+     */
+    public function getItems(): array;
 }

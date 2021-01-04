@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Deck;
+namespace Test\Dominoes\Deck;
 
 use Dominoes\Deck\Exception\TheHighestPipMustBeZeroOrHigher;
 use Dominoes\Deck\DeckFactory;
@@ -31,7 +31,7 @@ class DeckFactoryTest extends TestCase
         // Convert the tiles to String to make it easy to compare to the expected result
         $tilesResult = array_map(
             fn(TileInterface $tile) => sprintf('%s:%s', $tile->getLeftPip(), $tile->getRightPip()),
-            $deck->drawRandomTiles($deck->countTiles())
+            $deck->drawRandomTiles($deck->countTiles())->getItems()
         );
         sort($tilesResult);
 

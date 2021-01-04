@@ -6,19 +6,12 @@ declare(strict_types=1);
 namespace Dominoes\Player;
 
 
-use Dominoes\Tile\TileInterface;
+use Dominoes\Tile\TilesCollectionInterface;
 
 class Player implements PlayerInterface
 {
-
-    /**
-     * @var TileInterface[]
-     */
-    private array $tiles;
-
-    public function __construct(private string $name, TileInterface ...$tiles)
+    public function __construct(private string $name, private TilesCollectionInterface $tiles)
     {
-        $this->tiles = $tiles;
     }
 
     public function getName(): string
@@ -26,7 +19,7 @@ class Player implements PlayerInterface
         return $this->name;
     }
 
-    public function getTiles(): array
+    public function getTiles(): TilesCollectionInterface
     {
         return $this->tiles;
     }

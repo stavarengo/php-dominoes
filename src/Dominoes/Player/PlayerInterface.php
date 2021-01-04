@@ -6,14 +6,14 @@ declare(strict_types=1);
 namespace Dominoes\Player;
 
 
-use Dominoes\Tile\TileInterface;
+use Dominoes\Tile\TilesCollectionInterface;
 
 interface PlayerInterface
 {
     public function getName(): string;
 
     /**
-     * @return TileInterface[]
+     * @return TilesCollectionInterface
      */
-    public function getTiles(): array;
+    public function getTiles(): TilesCollectionInterface;
 }
