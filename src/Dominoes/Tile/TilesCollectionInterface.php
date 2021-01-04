@@ -41,4 +41,13 @@ interface TilesCollectionInterface
      * @return TileInterface[]
      */
     public function getTilesWithPips(int ...$pips): array;
+
+    /**
+     * Add $newTile to the collection, if it's not part of the collection yet.
+     *
+     * @param TileInterface $newTile
+     *
+     * @return $this
+     */
+    public function addTile(TileInterface $newTile): self;
 }

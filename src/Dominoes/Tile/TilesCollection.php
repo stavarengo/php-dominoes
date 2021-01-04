@@ -68,7 +68,7 @@ class TilesCollection implements TilesCollectionInterface
         return $tiles;
     }
 
-    private function addTile(TileInterface $newTile): TilesCollectionInterface
+    public function addTile(TileInterface $newTile): TilesCollectionInterface
     {
         foreach ($this->tiles as $tile) {
             if ($tile->equalsTo($newTile)) {
