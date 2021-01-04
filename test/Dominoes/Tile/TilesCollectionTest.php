@@ -11,6 +11,19 @@ use PHPUnit\Framework\TestCase;
 
 class TilesCollectionTest extends TestCase
 {
+    public function testTryInitializeCollectionWithDuplicatedTiles()
+    {
+        $tileA = $this->createStub(TileInterface::class);
+        $tileA->method('equalsTo')->willReturn(true);
+
+        $tileB = $this->createStub(TileInterface::class);
+        $tileB->method('equalsTo')->willReturn(false);
+
+        $collection = new TilesCollection($tileA, $tileB);
+        $this->assertEquals(1, $collection->countTiles());
+        $this->assertContains($tileA, $collection->getItems());
+    }
+
     /**
      * @dataProvider tilesDataProvider
      */
@@ -121,7 +134,6 @@ class TilesCollectionTest extends TestCase
     private function createTileStub(int $left, int $right): TileInterface
     {
         $tile = $this->createStub(TileInterface::class);
-        $tile->method('getId')->willReturn("$left:$right");
         $tile->method('getLeftPip')->willReturn($left);
         $tile->method('getRightPip')->willReturn($right);
 

@@ -15,7 +15,10 @@ class TilesCollection implements TilesCollectionInterface
 
     public function __construct(TileInterface ...$tiles)
     {
-        $this->tiles = $tiles;
+        $this->tiles = [];
+        foreach ($tiles as $tile) {
+            $this->addTile($tile);
+        }
     }
 
     public function countTiles(): int
@@ -58,10 +61,23 @@ class TilesCollection implements TilesCollectionInterface
         $tiles = [];
         foreach ($this->tiles as $tile) {
             if (in_array($tile->getLeftPip(), $pips) || in_array($tile->getRightPip(), $pips)) {
-                $tiles[$tile->getId()] = $tile;
+                $tiles[] = $tile;
             }
         }
 
-        return array_values($tiles);
+        return $tiles;
+    }
+
+    private function addTile(TileInterface $newTile): TilesCollectionInterface
+    {
+        foreach ($this->tiles as $tile) {
+            if ($tile->equalsTo($newTile)) {
+                return $this;
+            }
+        }
+
+        $this->tiles[] = $newTile;
+
+        return $this;
     }
 }

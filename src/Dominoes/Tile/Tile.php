@@ -13,11 +13,6 @@ class Tile implements TileInterface
     ) {
     }
 
-    public function getId(): string
-    {
-        return $this->getLeftPip() . $this->getRightPip();
-    }
-
     public function getLeftPip(): int
     {
         return $this->left;
@@ -31,5 +26,22 @@ class Tile implements TileInterface
     public function __toString(): string
     {
         return sprintf('<%s:%s>', $this->getLeftPip(), $this->getRightPip());
+    }
+
+    public function equalsTo(?TileInterface $other): bool
+    {
+        if (!$other) {
+            return false;
+        }
+
+        if ($this->getLeftPip() == $other->getLeftPip() && $this->getRightPip() == $other->getRightPip()) {
+            return true;
+        }
+
+        if ($this->getLeftPip() == $other->getRightPip() && $this->getRightPip() == $other->getLeftPip()) {
+            return true;
+        }
+
+        return false;
     }
 }
