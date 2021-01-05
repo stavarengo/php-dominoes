@@ -26,6 +26,18 @@ class TilesCollection implements TilesCollectionInterface
         return count($this->tiles);
     }
 
+    public function removeTile(TileInterface $tileToRemove): TilesCollectionInterface
+    {
+        foreach ($this->tiles as $key => $tile) {
+            if ($tile->equalsTo($tileToRemove)) {
+                $this->unsetByKey($key);
+                break;
+            }
+        }
+
+        return $this;
+    }
+
     public function drawRandomTile(): TileInterface
     {
         if ($this->countTiles() === 0) {
@@ -35,8 +47,7 @@ class TilesCollection implements TilesCollectionInterface
         $key = mt_rand(0, $this->countTiles() - 1);
 
         $tile = $this->tiles[$key];
-        unset($this->tiles[$key]);
-        $this->tiles = array_values($this->tiles);
+        $this->unsetByKey($key);
 
         return $tile;
     }
@@ -79,5 +90,11 @@ class TilesCollection implements TilesCollectionInterface
         $this->tiles[] = $newTile;
 
         return $this;
+    }
+
+    private function unsetByKey(int $key): void
+    {
+        unset($this->tiles[$key]);
+        $this->tiles = array_values($this->tiles);
     }
 }

@@ -135,6 +135,33 @@ class TilesCollectionTest extends TestCase
         $this->assertContains($tileA, $collection->getItems());
     }
 
+    public function testRemoveTile()
+    {
+        $collection = new TilesCollection(
+            $tileOneTwo = $this->createTileStub(1, 2),
+            $tileOneThree = $this->createTileStub(1, 3),
+        );
+        $this->assertEquals(2, $collection->countTiles());
+
+        $collection->removeTile($this->createStub(TileInterface::class));
+        $this->assertEquals(2, $collection->countTiles());
+        $this->assertContains($tileOneTwo, $collection->getItems());
+        $this->assertContains($tileOneThree, $collection->getItems());
+
+        $collection->removeTile($tileOneTwo);
+        $this->assertEquals(1, $collection->countTiles());
+        $this->assertNotContains($tileOneTwo, $collection->getItems());
+        $this->assertContains($tileOneThree, $collection->getItems());
+
+        $collection->removeTile($tileOneThree);
+        $this->assertEmpty($collection->countTiles());
+        $this->assertNotContains($tileOneTwo, $collection->getItems());
+        $this->assertNotContains($tileOneThree, $collection->getItems());
+
+        $collection->removeTile($this->createStub(TileInterface::class));
+        $this->assertEmpty($collection->countTiles());
+    }
+
     /**
      * @dataProvider tilesDataProvider
      */
@@ -167,6 +194,9 @@ class TilesCollectionTest extends TestCase
         $tile = $this->createStub(TileInterface::class);
         $tile->method('getLeftPip')->willReturn($left);
         $tile->method('getRightPip')->willReturn($right);
+        $tile->method('equalsTo')->willReturnCallback(
+            fn(TileInterface $other): bool => $other->getRightPip() == $right && $other->getLeftPip() == $left
+        );
 
         return $tile;
     }

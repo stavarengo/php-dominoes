@@ -21,6 +21,14 @@ interface TilesCollectionInterface
     public function drawRandomTile(): TileInterface;
 
     /**
+     * Remove the $tileToRemove from the collection if it exists.
+     *
+     * @param TileInterface $tileToRemove
+     * @return $this
+     */
+    public function removeTile(TileInterface $tileToRemove): self;
+
+    /**
      * @param int $count
      *  How many tiles should be draw.
      *
