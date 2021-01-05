@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Dominoes\LineOfPlay;
 
 
-use Dominoes\LineOfPlay\Validator\Exception\InvalidTileConnection;
+use Dominoes\LineOfPlay\ConnectionSpot\ConnectionSpotInterface;
 use Dominoes\Tile\TileInterface;
 
 interface LineOfPlayInterface
@@ -19,28 +19,23 @@ interface LineOfPlayInterface
     public function getTiles(): array;
 
     /**
-     * Connect the $tile to the left side of the line of play.
-     * The $tile will be automatically rotated if necessary.
+     * Returns a new line of play with the $tile connected to the leftmost side.
      *
      * @param TileInterface $tile
-     *
      * @return $this
-     *
-     * @throws InvalidTileConnection
-     *  If the $tile can't be connected to the left side even after it was rotated.
      */
-    public function connectLeft(TileInterface $tile): self;
+    public function withPrependedTile(TileInterface $tile): self;
 
     /**
-     * Connect the $tile to the right side of the line of play.
-     * The $tile will be automatically rotated if necessary.
+     * Returns a new line of play with the $tile connected to the rightmost side.
      *
      * @param TileInterface $tile
-     *
      * @return $this
-     *
-     * @throws InvalidTileConnection
-     *  If the $tile can't be connected to the right side even after it was rotated.
      */
-    public function connectRight(TileInterface $tile): self;
+    public function withAppendedTile(TileInterface $tile): self;
+
+    /**
+     * @return ConnectionSpotInterface[]
+     */
+    public function getConnectionSpots(): array;
 }

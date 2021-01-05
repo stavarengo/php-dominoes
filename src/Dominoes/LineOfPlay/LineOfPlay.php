@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Dominoes\LineOfPlay;
 
 
-use Dominoes\LineOfPlay\Validator\ConnectionValidatorInterface;
+use Dominoes\LineOfPlay\ConnectionSpot\ConnectionSpot;
 use Dominoes\Tile\TileInterface;
 
 class LineOfPlay implements LineOfPlayInterface
@@ -16,34 +16,34 @@ class LineOfPlay implements LineOfPlayInterface
      */
     private array $tiles = [];
 
-    public function __construct(private ConnectionValidatorInterface $validator)
-    {
-    }
-
     public function getTiles(): array
     {
         return $this->tiles;
     }
 
-    public function connectLeft(TileInterface $tile): LineOfPlayInterface
+    public function withPrependedTile(TileInterface $tile): LineOfPlayInterface
     {
-        if ($this->tiles) {
-            $this->validator->validateConnection($tile, $this->tiles[0]);
-        }
+        $newLineOfPlay = new self();
 
-        $this->tiles = [$tile, ...$this->tiles];
+        $newLineOfPlay->tiles = [$tile, ...$this->tiles];
 
-        return $this;
+        return $newLineOfPlay;
     }
 
-    public function connectRight(TileInterface $tile): LineOfPlayInterface
+    public function withAppendedTile(TileInterface $tile): LineOfPlayInterface
     {
-        if ($this->tiles) {
-            $this->validator->validateConnection(end($this->tiles), $tile);
-        }
+        $newLineOfPlay = new self();
 
-        $this->tiles[] = $tile;
+        $newLineOfPlay->tiles = [...$this->tiles, $tile];
 
-        return $this;
+        return $newLineOfPlay;
+    }
+
+    public function getConnectionSpots(): array
+    {
+        return [
+            new ConnectionSpot($this, false),
+            new ConnectionSpot($this, true),
+        ];
     }
 }
