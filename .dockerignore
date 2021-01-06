@@ -1,5 +1,6 @@
+.git/
 composer.phar
-.idea/
 vendor/
+.idea/
 test-coverage/
 .phpunit.result.cache
