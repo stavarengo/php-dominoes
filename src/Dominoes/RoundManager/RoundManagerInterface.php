@@ -17,4 +17,15 @@ interface RoundManagerInterface
      * @throws NoMorePlayersToPlay
      */
     public function nextPlayer(): PlayerInterface;
+
+    /**
+     * @return PlayerInterface
+     *
+     * @throws NoMorePlayersToPlay
+     */
+    public function getCurrentPlayer(): PlayerInterface;
+
+    public function countPlayers(): int;
+
+    public function setPlayers(PlayerInterface ...$players): RoundManagerInterface;
 }

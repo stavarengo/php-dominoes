@@ -14,13 +14,12 @@ class RoundManager implements RoundManagerInterface
     /**
      * @var PlayerInterface[]
      */
-    private array $players;
+    private array $players = [];
 
     private int $currentPlayerKey;
 
-    public function __construct(PlayerInterface ...$players)
+    public function __construct()
     {
-        $this->players = $players;
         $this->currentPlayerKey = -1;
     }
 
@@ -35,5 +34,30 @@ class RoundManager implements RoundManagerInterface
         }
 
         return $this->players[$this->currentPlayerKey];
+    }
+
+    public function getCurrentPlayer(): PlayerInterface
+    {
+        if (!$this->players) {
+            throw NoMorePlayersToPlay::create();
+        }
+
+        if ($this->currentPlayerKey < 0) {
+            $this->currentPlayerKey = 0;
+        }
+
+        return $this->players[$this->currentPlayerKey];
+    }
+
+    public function countPlayers(): int
+    {
+        return count($this->players);
+    }
+
+    public function setPlayers(PlayerInterface ...$players): RoundManagerInterface
+    {
+        $this->players = $players;
+
+        return $this;
     }
 }
