@@ -58,4 +58,6 @@ interface TilesCollectionInterface
      * @return $this
      */
     public function addTile(TileInterface $newTile): self;
+
+    public function contains(TileInterface $tile): bool;
 }

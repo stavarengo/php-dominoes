@@ -162,6 +162,24 @@ class TilesCollectionTest extends TestCase
         $this->assertEmpty($collection->countTiles());
     }
 
+    public function testContains()
+    {
+        $collection = new TilesCollection(
+            $tileOneTwo = $this->createTileStub(1, 2),
+            $tileOneThree = $this->createTileStub(1, 3),
+        );
+        $this->assertEquals(2, $collection->countTiles());
+
+        $this->assertTrue($collection->contains($tileOneTwo));
+        $this->assertTrue($collection->contains($tileOneThree));
+
+        $tileOneTwoClone = $this->createTileStub($tileOneTwo->getLeftPip(), $tileOneTwo->getRightPip());
+        $this->assertTrue($collection->contains($tileOneTwoClone));
+
+        $tileFiveSix = $this->createTileStub(5, 6);
+        $this->assertFalse($collection->contains($tileFiveSix));
+    }
+
     /**
      * @dataProvider tilesDataProvider
      */

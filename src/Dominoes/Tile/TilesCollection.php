@@ -97,4 +97,16 @@ class TilesCollection implements TilesCollectionInterface
         unset($this->tiles[$key]);
         $this->tiles = array_values($this->tiles);
     }
+
+    public function contains(TileInterface $tile): bool
+    {
+        foreach ($this->tiles as $item) {
+            if ($item->equalsTo($tile)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }
