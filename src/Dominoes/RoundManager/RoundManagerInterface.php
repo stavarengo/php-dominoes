@@ -28,4 +28,9 @@ interface RoundManagerInterface
     public function countPlayers(): int;
 
     public function setPlayers(PlayerInterface ...$players): RoundManagerInterface;
+
+    /**
+     * @return PlayerInterface[]
+     */
+    public function getPlayers(): array;
 }

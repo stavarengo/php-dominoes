@@ -72,6 +72,19 @@ class RoundManagerTest extends TestCase
         $this->assertEquals(2, (new RoundManager())->setPlayers($player1, $player2)->countPlayers());
     }
 
+    public function testGetPlayers()
+    {
+        $player1 = $this->createStub(PlayerInterface::class);
+        $player2 = $this->createStub(PlayerInterface::class);
+
+        $this->assertEmpty((new RoundManager())->getPlayers());
+
+        $roundManager = (new RoundManager())->setPlayers($player1, $player2);
+        $this->assertCount(2, $roundManager->getPlayers());
+        $this->assertSame($player1, $roundManager->getPlayers()[0]);
+        $this->assertSame($player2, $roundManager->getPlayers()[1]);
+    }
+
     public function testSetPlayers()
     {
         $player1 = $this->createStub(PlayerInterface::class);

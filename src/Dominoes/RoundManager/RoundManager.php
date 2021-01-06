@@ -60,4 +60,9 @@ class RoundManager implements RoundManagerInterface
 
         return $this;
     }
+
+    public function getPlayers(): array
+    {
+        return $this->players;
+    }
 }
