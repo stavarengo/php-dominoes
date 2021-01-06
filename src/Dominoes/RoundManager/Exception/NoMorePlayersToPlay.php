@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace Dominoes\Round\Exception;
+namespace Dominoes\RoundManager\Exception;
 
 
 class NoMorePlayersToPlay extends \RuntimeException

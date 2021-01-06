@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 
-namespace Dominoes\Round;
+namespace Dominoes\RoundManager;
 
 
 use Dominoes\Player\PlayerInterface;
-use Dominoes\Round\Exception\NoMorePlayersToPlay;
+use Dominoes\RoundManager\Exception\NoMorePlayersToPlay;
 
-class Round implements RoundInterface
+class RoundManager implements RoundManagerInterface
 {
     /**
      * @var PlayerInterface[]
