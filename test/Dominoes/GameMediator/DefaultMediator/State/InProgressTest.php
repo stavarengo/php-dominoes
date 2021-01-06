@@ -177,7 +177,11 @@ class InProgressTest extends TestCase
     {
         $this->expectExceptionObject(GameIsAlreadyInProgress::create());
         $state = new InProgress($this->createStub(DefaultMediator::class));
-        $state->start();
+        $state->start(
+            $gameListener = $this->createStub(GameListenerInterface::class),
+            $deck = $this->createStub(TilesCollectionInterface::class),
+            ...[]
+        );
     }
 
     public function testDrawOrPassShouldDrawIfDeckIsNotEmpty()

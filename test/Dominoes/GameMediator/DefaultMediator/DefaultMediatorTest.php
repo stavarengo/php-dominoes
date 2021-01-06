@@ -23,8 +23,6 @@ class DefaultMediatorTest extends TestCase
         $mediator = new DefaultMediator(
             $this->createMock(RoundManagerInterface::class),
             $this->createStub(LineOfPlayInterface::class),
-            $this->createStub(TilesCollectionInterface::class),
-            $this->createStub(GameListenerInterface::class),
         );
 
         $this->assertInstanceOf(NotStarted::class, $mediator->getCurrentState());
@@ -35,8 +33,6 @@ class DefaultMediatorTest extends TestCase
         $mediator = new DefaultMediator(
             $this->createMock(RoundManagerInterface::class),
             $this->createStub(LineOfPlayInterface::class),
-            $this->createStub(TilesCollectionInterface::class),
-            $this->createStub(GameListenerInterface::class),
         );
 
         $state = $this->createMock(AbstractState::class);
@@ -60,9 +56,13 @@ class DefaultMediatorTest extends TestCase
 
         $state = $this->createMock(AbstractState::class);
         $state->expects($this->once())->method('start')
-            ->with($this->identicalTo($player = $this->createStub(PlayerInterface::class)));;
+            ->with(
+                $this->identicalTo($gameListener = $this->createStub(GameListenerInterface::class)),
+                $this->identicalTo($deck = $this->createStub(TilesCollectionInterface::class)),
+                $this->identicalTo($player = $this->createStub(PlayerInterface::class))
+            );
         $mediator->changeState($state);
-        $mediator->start($player);
+        $mediator->start($gameListener, $deck, $player);
 
         $state = $this->createMock(AbstractState::class);
         $state->expects($this->once())->method('drawOrPass');
@@ -84,9 +84,7 @@ class DefaultMediatorTest extends TestCase
     {
         $mediator = new DefaultMediator(
             $roundManager = $this->createMock(RoundManagerInterface::class),
-            $lineOfPlay = $this->createStub(LineOfPlayInterface::class),
-            $deck = $this->createStub(TilesCollectionInterface::class),
-            $gameListener = $this->createStub(GameListenerInterface::class),
+            $lineOfPlay = $this->createStub(LineOfPlayInterface::class)
         );
 
         $mediator->changeState($state = $this->createStub(AbstractState::class));
@@ -94,6 +92,13 @@ class DefaultMediatorTest extends TestCase
 
         $this->assertSame($roundManager, $mediator->getRoundManager());
         $this->assertSame($lineOfPlay, $mediator->getLineOfPlay());
+
+        $mediator->start(
+            $gameListener = $this->createStub(GameListenerInterface::class),
+            $deck = $this->createStub(TilesCollectionInterface::class),
+            ...[]
+        );
+
         $this->assertSame($deck, $mediator->getDeck());
         $this->assertSame($gameListener, $mediator->getGameListener());
     }
@@ -103,8 +108,6 @@ class DefaultMediatorTest extends TestCase
         $mediator = new DefaultMediator(
             $this->createMock(RoundManagerInterface::class),
             $lineOfPlay1 = $this->createStub(LineOfPlayInterface::class),
-            $this->createStub(TilesCollectionInterface::class),
-            $this->createStub(GameListenerInterface::class),
         );
 
         $this->assertSame($lineOfPlay1, $mediator->getLineOfPlay());
@@ -118,8 +121,6 @@ class DefaultMediatorTest extends TestCase
         $mediator = new DefaultMediator(
             $this->createMock(RoundManagerInterface::class),
             $this->createStub(LineOfPlayInterface::class),
-            $this->createStub(TilesCollectionInterface::class),
-            $this->createStub(GameListenerInterface::class),
         );
 
         $mediator->changeState($state1 = $this->createStub(AbstractState::class));

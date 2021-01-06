@@ -21,18 +21,25 @@ class DefaultMediator implements GameMediatorInterface
 {
     private AbstractState $state;
 
+    private GameListenerInterface $gameListener;
+
+    private TilesCollectionInterface $deck;
+
     public function __construct(
         private RoundManagerInterface $roundManager,
         private LineOfPlayInterface $lineOfPlay,
-        private TilesCollectionInterface $deck,
-        private GameListenerInterface $gameListener,
     ) {
         $this->state = new NotStarted($this);
     }
 
-    public function start(PlayerInterface ...$players): void
-    {
-        $this->state->start(...$players);
+    public function start(
+        GameListenerInterface $gameListener,
+        TilesCollectionInterface $deck,
+        PlayerInterface ...$players
+    ): void {
+        $this->gameListener = $gameListener;
+        $this->deck = $deck;
+        $this->state->start($gameListener, $deck, ...$players);
     }
 
     public function getConnectionSpots(): array

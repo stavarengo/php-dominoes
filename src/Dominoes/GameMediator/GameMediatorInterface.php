@@ -10,6 +10,7 @@ use Dominoes\GameMediator\Exception\GameException;
 use Dominoes\LineOfPlay\ConnectionSpot\ConnectionSpotInterface;
 use Dominoes\Player\PlayerInterface;
 use Dominoes\Tile\TileInterface;
+use Dominoes\Tile\TilesCollectionInterface;
 
 interface GameMediatorInterface
 {
@@ -38,10 +39,16 @@ interface GameMediatorInterface
     public function connectTile(TileInterface $tile, ConnectionSpotInterface $connectionSpot,): void;
 
     /**
+     * @param GameListenerInterface $gameListener
+     * @param TilesCollectionInterface $deck
      * @param PlayerInterface ...$players
      * @throws GameException
      */
-    public function start(PlayerInterface ...$players): void;
+    public function start(
+        GameListenerInterface $gameListener,
+        TilesCollectionInterface $deck,
+        PlayerInterface ...$players
+    ): void;
 
     /**
      * @throws GameException

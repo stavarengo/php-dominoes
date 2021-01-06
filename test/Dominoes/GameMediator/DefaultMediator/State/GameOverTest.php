@@ -8,6 +8,7 @@ use Dominoes\GameMediator\DefaultMediator\DefaultMediator;
 use Dominoes\GameMediator\DefaultMediator\State\GameOver;
 use Dominoes\GameMediator\DefaultMediator\State\NotStarted;
 use Dominoes\GameMediator\Exception\GameIsAlreadyOver;
+use Dominoes\GameMediator\GameListenerInterface;
 use Dominoes\GameMediator\GameMediatorInterface;
 use Dominoes\LineOfPlay\ConnectionSpot\ConnectionSpotInterface;
 use Dominoes\Player\PlayerInterface;
@@ -43,7 +44,12 @@ class GameOverTest extends TestCase
     {
         $this->expectExceptionObject(GameIsAlreadyOver::create());
         $state = new GameOver($this->createStub(DefaultMediator::class));
-        $state->start(...[]);
+        $state->start(
+            $this->createStub(GameListenerInterface::class),
+            $this->createStub(TilesCollectionInterface::class),
+            ...
+            []
+        );
     }
 
     public function testDrawOrPass()
@@ -95,6 +101,5 @@ class GameOverTest extends TestCase
         $this->assertNull((new GameOver($gameMediator))->getWinner());
 
         $this->assertNull((new GameOver($this->createStub(DefaultMediator::class)))->getWinner());
-
     }
 }

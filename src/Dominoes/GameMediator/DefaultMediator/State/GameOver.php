@@ -7,10 +7,12 @@ namespace Dominoes\GameMediator\DefaultMediator\State;
 
 
 use Dominoes\GameMediator\Exception\GameIsAlreadyOver;
+use Dominoes\GameMediator\GameListenerInterface;
 use Dominoes\GameMediator\GameMediatorInterface;
 use Dominoes\LineOfPlay\ConnectionSpot\ConnectionSpotInterface;
 use Dominoes\Player\PlayerInterface;
 use Dominoes\Tile\TileInterface;
+use Dominoes\Tile\TilesCollectionInterface;
 
 class GameOver extends AbstractState
 {
@@ -30,7 +32,7 @@ class GameOver extends AbstractState
         throw GameIsAlreadyOver::create();
     }
 
-    public function start(PlayerInterface ...$players): void
+    public function start(GameListenerInterface $gameListener, TilesCollectionInterface $deck, PlayerInterface ...$players): void
     {
         throw GameIsAlreadyOver::create();
     }

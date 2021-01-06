@@ -8,11 +8,13 @@ use Dominoes\GameMediator\DefaultMediator\DefaultMediator;
 use Dominoes\GameMediator\DefaultMediator\State\InProgress;
 use Dominoes\GameMediator\DefaultMediator\State\NotStarted;
 use Dominoes\GameMediator\Exception\GameDidNotStartYet;
+use Dominoes\GameMediator\GameListenerInterface;
 use Dominoes\GameMediator\GameMediatorInterface;
 use Dominoes\LineOfPlay\ConnectionSpot\ConnectionSpotInterface;
 use Dominoes\Player\PlayerInterface;
 use Dominoes\RoundManager\RoundManagerInterface;
 use Dominoes\Tile\TileInterface;
+use Dominoes\Tile\TilesCollectionInterface;
 use PHPUnit\Framework\TestCase;
 
 class NotStartedTest extends TestCase
@@ -56,7 +58,11 @@ class NotStartedTest extends TestCase
             ->willReturn($roundManager);
 
         $state = new NotStarted($gameMediator);
-        $state->start($player);
+        $state->start(
+            $gameListener = $this->createStub(GameListenerInterface::class),
+            $deck = $this->createStub(TilesCollectionInterface::class),
+            $player
+        );
     }
 
     public function testDrawOrPass()
