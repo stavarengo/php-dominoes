@@ -22,7 +22,7 @@ require __DIR__ . '/../vendor/autoload.php';
     $input = getopt('', long_options: ['highestPip::', 'tilesPerPlayer::', 'players::']);
     $highestDeckPip = (int)($input['highestPip'] ?? 6);
     $tilesPerPlayer = (int)($input['tilesPerPlayer'] ?? 7);
-    $players = trim((((string)$input['players']) ?? null));
+    $players = isset($input['players']) && is_string($input['players']) ? trim($input['players']) : '';
     if (!$players) {
         $players = 'Alice,Bob';
     }
