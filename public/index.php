@@ -19,10 +19,16 @@ require __DIR__ . '/../vendor/autoload.php';
     /** @var \Psr\Container\ContainerInterface $container */
     $container = include_once __DIR__ . '/../config/container.php';
 
-    $input = getopt('', long_options: ['highestPip::', 'tilesPerPlayer::']);
+    $input = getopt('', long_options: ['highestPip::', 'tilesPerPlayer::', 'players::']);
     $highestDeckPip = (int)($input['highestPip'] ?? 6);
     $tilesPerPlayer = (int)($input['tilesPerPlayer'] ?? 7);
+    $players = trim((((string)$input['players']) ?? null));
+    if (!$players) {
+        $players = 'Alice,Bob';
+    }
+    $playersName = array_filter(explode(',', $players));
+
 
     $app = $container->get(\Console\Application::class);
-    $app->execute($highestDeckPip, $tilesPerPlayer);
+    $app->execute($highestDeckPip, $tilesPerPlayer, ...$playersName);
 })();

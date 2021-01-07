@@ -11,6 +11,7 @@ use Dominoes\Deck\DeckFactoryInterface;
 use Dominoes\GameMediator\GameListenerInterface;
 use Dominoes\GameMediator\GameMediatorInterface;
 use Dominoes\Player\Player;
+use Dominoes\Player\PlayerInterface;
 use Psr\Log\LoggerInterface;
 
 class Application
@@ -25,15 +26,20 @@ class Application
     ) {
     }
 
-    public function execute(int $highestDeckPip, int $tilesPerPlayer)
+    public function execute(int $highestDeckPip, int $tilesPerPlayer, string ...$playersName)
     {
         $deck = $this->deckFactory->createDeck($highestDeckPip);
 
         $this->mediator->start(
             $this->gameListener,
             $deck,
-            new Player('Alice', $deck->drawRandomTiles($tilesPerPlayer)),
-            new Player('Bob', $deck->drawRandomTiles($tilesPerPlayer)),
+            ...array_map(
+                fn(string $playerName): PlayerInterface => new Player(
+                    $playerName,
+                    $deck->drawRandomTiles($tilesPerPlayer)
+                ),
+                $playersName
+            ),
         );
 
         while ($this->mediator->getStatus() == GameMediatorInterface::STATUS_IN_PROGRESS) {
