@@ -17,7 +17,7 @@ This is a [Dominoes](https://en.wikipedia.org/wiki/Dominoes) game that allows bo
    ```
    If your machine doesn't have PHP 8, you can use [Docker](https://docs.docker.com/get-docker/).
    ```bash
-      $ docker-compose up
+   $ docker-compose up
    ```
 
 ## About the project
