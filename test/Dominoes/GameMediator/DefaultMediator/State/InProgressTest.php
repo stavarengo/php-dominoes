@@ -179,27 +179,27 @@ class InProgressTest extends TestCase
         $state = new InProgress($this->createStub(DefaultMediator::class));
         $state->start(
             $gameListener = $this->createStub(GameListenerInterface::class),
-            $deck = $this->createStub(TilesCollectionInterface::class),
+            $boneyard = $this->createStub(TilesCollectionInterface::class),
             ...[]
         );
     }
 
-    public function testDrawOrPassShouldDrawIfDeckIsNotEmpty()
+    public function testDrawOrPassShouldDrawIfBoneyardIsNotEmpty()
     {
-        $tileFromDeck = $this->createStub(TileInterface::class);
+        $tileFromBoneyard = $this->createStub(TileInterface::class);
 
-        $deck = $this->createMock(TilesCollectionInterface::class);
-        $deck->expects($this->once())
+        $boneyard = $this->createMock(TilesCollectionInterface::class);
+        $boneyard->expects($this->once())
             ->method('countTiles')
             ->willReturn(1);
-        $deck->expects($this->once())
+        $boneyard->expects($this->once())
             ->method('drawRandomTile')
-            ->willReturn($tileFromDeck);
+            ->willReturn($tileFromBoneyard);
 
         $currentPlayerTiles = $this->createMock(TilesCollectionInterface::class);
         $currentPlayerTiles->expects($this->once())
             ->method('addTile')
-            ->with($this->identicalTo($tileFromDeck));
+            ->with($this->identicalTo($tileFromBoneyard));
 
         $currentPlayer = $this->createStub(PlayerInterface::class);
         $currentPlayer->method('getTiles')->willReturn($currentPlayerTiles);
@@ -210,22 +210,22 @@ class InProgressTest extends TestCase
         $gameListener = $this->createMock(GameListenerInterface::class);
         $gameListener->expects($this->once())
             ->method('playerDraw')
-            ->with($this->identicalTo($currentPlayer), $this->identicalTo($tileFromDeck),);
+            ->with($this->identicalTo($currentPlayer), $this->identicalTo($tileFromBoneyard),);
 
         $gameMediator = $this->createMock(DefaultMediator::class);
         $gameMediator->method('getRoundManager')->willReturn($roundManager);
         $gameMediator->method('getGameListener')->willReturn($gameListener);
-        $gameMediator->method('getDeck')->willReturn($deck);
+        $gameMediator->method('getBoneyard')->willReturn($boneyard);
         $gameMediator->expects($this->exactly(0))->method('changeState');
         $state = new InProgress($gameMediator);
 
         $state->drawOrPass();
     }
 
-    public function testDrawOrPassShouldPassIfDeckIsEmpty()
+    public function testDrawOrPassShouldPassIfBoneyardIsEmpty()
     {
-        $deck = $this->createMock(TilesCollectionInterface::class);
-        $deck->expects($this->once())
+        $boneyard = $this->createMock(TilesCollectionInterface::class);
+        $boneyard->expects($this->once())
             ->method('countTiles')
             ->willReturn(0);
 
@@ -244,7 +244,7 @@ class InProgressTest extends TestCase
         $gameMediator = $this->createMock(DefaultMediator::class);
         $gameMediator->method('getRoundManager')->willReturn($roundManager);
         $gameMediator->method('getGameListener')->willReturn($gameListener);
-        $gameMediator->method('getDeck')->willReturn($deck);
+        $gameMediator->method('getBoneyard')->willReturn($boneyard);
 
         $state = new InProgress($gameMediator);
         $state->drawOrPass();
@@ -252,8 +252,8 @@ class InProgressTest extends TestCase
 
     public function testDrawOrPassShouldChangeStatusIfEverybodyPassTurnInSequence()
     {
-        $deck = $this->createStub(TilesCollectionInterface::class);
-        $deck->method('countTiles')->willReturn(0);
+        $boneyard = $this->createStub(TilesCollectionInterface::class);
+        $boneyard->method('countTiles')->willReturn(0);
 
         $roundManager = $this->createStub(RoundManagerInterface::class);
         $roundManager->method('countPlayers')->willReturn(2);

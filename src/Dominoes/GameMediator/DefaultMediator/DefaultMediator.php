@@ -23,7 +23,7 @@ class DefaultMediator implements GameMediatorInterface
 
     private GameListenerInterface $gameListener;
 
-    private TilesCollectionInterface $deck;
+    private TilesCollectionInterface $boneyard;
 
     public function __construct(
         private RoundManagerInterface $roundManager,
@@ -34,12 +34,12 @@ class DefaultMediator implements GameMediatorInterface
 
     public function start(
         GameListenerInterface $gameListener,
-        TilesCollectionInterface $deck,
+        TilesCollectionInterface $boneyard,
         PlayerInterface ...$players
     ): void {
         $this->gameListener = $gameListener;
-        $this->deck = $deck;
-        $this->state->start($gameListener, $deck, ...$players);
+        $this->boneyard = $boneyard;
+        $this->state->start($gameListener, $boneyard, ...$players);
     }
 
     public function getConnectionSpots(): array
@@ -102,8 +102,8 @@ class DefaultMediator implements GameMediatorInterface
         $this->lineOfPlay = $lineOfPlay;
     }
 
-    public function getDeck(): TilesCollectionInterface
+    public function getBoneyard(): TilesCollectionInterface
     {
-        return $this->deck;
+        return $this->boneyard;
     }
 }

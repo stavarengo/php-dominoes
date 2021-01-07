@@ -58,11 +58,11 @@ class DefaultMediatorTest extends TestCase
         $state->expects($this->once())->method('start')
             ->with(
                 $this->identicalTo($gameListener = $this->createStub(GameListenerInterface::class)),
-                $this->identicalTo($deck = $this->createStub(TilesCollectionInterface::class)),
+                $this->identicalTo($boneyard = $this->createStub(TilesCollectionInterface::class)),
                 $this->identicalTo($player = $this->createStub(PlayerInterface::class))
             );
         $mediator->changeState($state);
-        $mediator->start($gameListener, $deck, $player);
+        $mediator->start($gameListener, $boneyard, $player);
 
         $state = $this->createMock(AbstractState::class);
         $state->expects($this->once())->method('drawOrPass');
@@ -95,11 +95,11 @@ class DefaultMediatorTest extends TestCase
 
         $mediator->start(
             $gameListener = $this->createStub(GameListenerInterface::class),
-            $deck = $this->createStub(TilesCollectionInterface::class),
+            $boneyard = $this->createStub(TilesCollectionInterface::class),
             ...[]
         );
 
-        $this->assertSame($deck, $mediator->getDeck());
+        $this->assertSame($boneyard, $mediator->getBoneyard());
         $this->assertSame($gameListener, $mediator->getGameListener());
     }
 

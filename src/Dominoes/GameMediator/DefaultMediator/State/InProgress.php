@@ -53,15 +53,18 @@ class InProgress extends AbstractState
         $this->passTurnCount = 0;
     }
 
-    public function start(GameListenerInterface $gameListener, TilesCollectionInterface $deck, PlayerInterface ...$players): void
-    {
+    public function start(
+        GameListenerInterface $gameListener,
+        TilesCollectionInterface $boneyard,
+        PlayerInterface ...$players
+    ): void {
         throw GameIsAlreadyInProgress::create();
     }
 
     public function drawOrPass(): void
     {
-        if ($this->gameMediator->getDeck()->countTiles() > 0) {
-            $newTile = $this->gameMediator->getDeck()->drawRandomTile();
+        if ($this->gameMediator->getBoneyard()->countTiles() > 0) {
+            $newTile = $this->gameMediator->getBoneyard()->drawRandomTile();
             $player = $this->gameMediator->getRoundManager()->getCurrentPlayer();
 
             $player->getTiles()->addTile($newTile);

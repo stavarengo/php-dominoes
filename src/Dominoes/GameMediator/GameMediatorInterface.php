@@ -40,13 +40,13 @@ interface GameMediatorInterface
 
     /**
      * @param GameListenerInterface $gameListener
-     * @param TilesCollectionInterface $deck
+     * @param TilesCollectionInterface $boneyard
      * @param PlayerInterface ...$players
      * @throws GameException
      */
     public function start(
         GameListenerInterface $gameListener,
-        TilesCollectionInterface $deck,
+        TilesCollectionInterface $boneyard,
         PlayerInterface ...$players
     ): void;
 

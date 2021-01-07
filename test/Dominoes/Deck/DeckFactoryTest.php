@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Test\Dominoes\Deck;
 
-use Dominoes\Deck\Exception\TheHighestPipMustBeZeroOrHigher;
 use Dominoes\Deck\DeckFactory;
+use Dominoes\Deck\Exception\TheHighestPipMustBeZeroOrHigher;
 use Dominoes\Tile\TileInterface;
 use PHPUnit\Framework\TestCase;
 

@@ -16,7 +16,7 @@ interface TilesCollectionInterface
      * @return TileInterface
      *
      * @throws Exception\CantDrawFromAnEmptyCollection
-     *  If the deck is out of tiles.
+     *  If the collection is out of tiles.
      */
     public function drawRandomTile(): TileInterface;
 

@@ -31,8 +31,11 @@ class NotStarted extends AbstractState
         throw GameDidNotStartYet::create();
     }
 
-    public function start(GameListenerInterface $gameListener, TilesCollectionInterface $deck, PlayerInterface ...$players): void
-    {
+    public function start(
+        GameListenerInterface $gameListener,
+        TilesCollectionInterface $boneyard,
+        PlayerInterface ...$players
+    ): void {
         $this->gameMediator->getRoundManager()->setPlayers(...$players);
 
         $this->gameMediator->changeState(new InProgress($this->gameMediator));

@@ -60,7 +60,7 @@ class NotStartedTest extends TestCase
         $state = new NotStarted($gameMediator);
         $state->start(
             $gameListener = $this->createStub(GameListenerInterface::class),
-            $deck = $this->createStub(TilesCollectionInterface::class),
+            $boneyard = $this->createStub(TilesCollectionInterface::class),
             $player
         );
     }

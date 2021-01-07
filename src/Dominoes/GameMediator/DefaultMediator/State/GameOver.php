@@ -32,8 +32,11 @@ class GameOver extends AbstractState
         throw GameIsAlreadyOver::create();
     }
 
-    public function start(GameListenerInterface $gameListener, TilesCollectionInterface $deck, PlayerInterface ...$players): void
-    {
+    public function start(
+        GameListenerInterface $gameListener,
+        TilesCollectionInterface $boneyard,
+        PlayerInterface ...$players
+    ): void {
         throw GameIsAlreadyOver::create();
     }
 
