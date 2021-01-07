@@ -11,6 +11,7 @@ use Dominoes\GameMediator\Exception\GameDidNotStartYet;
 use Dominoes\GameMediator\GameListenerInterface;
 use Dominoes\GameMediator\GameMediatorInterface;
 use Dominoes\LineOfPlay\ConnectionSpot\ConnectionSpotInterface;
+use Dominoes\LineOfPlay\LineOfPlayInterface;
 use Dominoes\Player\PlayerInterface;
 use Dominoes\RoundManager\RoundManagerInterface;
 use Dominoes\Tile\TileInterface;
@@ -49,6 +50,14 @@ class NotStartedTest extends TestCase
             ->method('setPlayers')
             ->with($this->identicalTo($player));
 
+        $firstTile = $this->createStub(TileInterface::class);
+
+        $lineOfPlay = $this->createMock(LineOfPlayInterface::class);
+        $lineOfPlay->expects($this->once())
+            ->method('withAppendedTile')
+            ->willReturn($lineOfPlay)
+            ->with($firstTile);
+
         $gameMediator = $this->createMock(DefaultMediator::class);
         $gameMediator->expects($this->once())
             ->method('changeState')
@@ -56,13 +65,22 @@ class NotStartedTest extends TestCase
         $gameMediator->expects($this->once())
             ->method('getRoundManager')
             ->willReturn($roundManager);
+        $gameMediator->expects($this->once())
+            ->method('getLineOfPlay')
+            ->willReturn($lineOfPlay);
+
+        $boneyard = $this->createMock(TilesCollectionInterface::class);
+        $boneyard->expects($this->once())
+            ->method('drawRandomTile')
+            ->willReturn($firstTile);
+
+        $gameListener = $this->createMock(GameListenerInterface::class);
+        $gameListener->expects($this->once())
+            ->method('gameStarted')
+            ->with($this->identicalTo($lineOfPlay), $this->identicalTo($boneyard), $this->identicalTo($player));
 
         $state = new NotStarted($gameMediator);
-        $state->start(
-            $gameListener = $this->createStub(GameListenerInterface::class),
-            $boneyard = $this->createStub(TilesCollectionInterface::class),
-            $player
-        );
+        $state->start($gameListener, $boneyard, $player);
     }
 
     public function testDrawOrPass()

@@ -28,7 +28,6 @@ class Application
     public function execute()
     {
         $deck = $this->deckFactory->createDeck(6);
-        $firstTile = $deck->drawRandomTile();
 
         $this->mediator->start(
             $this->gameListener,
@@ -36,8 +35,6 @@ class Application
             new Player('Alice', $deck->drawRandomTiles(7)),
             new Player('Bob', $deck->drawRandomTiles(7)),
         );
-
-        $this->logger->debug(sprintf('Game started with first tile %s', $firstTile));
 
         while ($this->mediator->getStatus() == GameMediatorInterface::STATUS_IN_PROGRESS) {
             $this->bot->play($this->mediator);

@@ -22,7 +22,7 @@ interface LineOfPlayInterface
      * Returns a new line of play with the $tile connected to the leftmost side.
      *
      * @param TileInterface $tile
-     * @return $this
+     * @return LineOfPlayInterface
      */
     public function withPrependedTile(TileInterface $tile): self;
 
@@ -30,7 +30,7 @@ interface LineOfPlayInterface
      * Returns a new line of play with the $tile connected to the rightmost side.
      *
      * @param TileInterface $tile
-     * @return $this
+     * @return LineOfPlayInterface
      */
     public function withAppendedTile(TileInterface $tile): self;
 

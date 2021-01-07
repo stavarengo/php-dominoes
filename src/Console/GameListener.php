@@ -11,6 +11,7 @@ use Dominoes\LineOfPlay\ConnectionSpot\ConnectionSpotInterface;
 use Dominoes\LineOfPlay\LineOfPlayInterface;
 use Dominoes\Player\PlayerInterface;
 use Dominoes\Tile\TileInterface;
+use Dominoes\Tile\TilesCollectionInterface;
 use Psr\Log\LoggerInterface;
 
 class GameListener implements GameListenerInterface
@@ -18,6 +19,14 @@ class GameListener implements GameListenerInterface
 
     public function __construct(private LoggerInterface $logger)
     {
+    }
+
+    public function gameStarted(
+        LineOfPlayInterface $lineOfPlay,
+        TilesCollectionInterface $boneyard,
+        PlayerInterface ...$players
+    ): void {
+        $this->logger->debug(sprintf('Game started with: %s', implode(' ', $lineOfPlay->getTiles())));
     }
 
     public function playerConnectedTile(

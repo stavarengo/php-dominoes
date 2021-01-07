@@ -36,9 +36,15 @@ class NotStarted extends AbstractState
         TilesCollectionInterface $boneyard,
         PlayerInterface ...$players
     ): void {
+        $firstTile = $boneyard->drawRandomTile();
+        $lineOfPlay = $this->gameMediator->getLineOfPlay()->withAppendedTile($firstTile);
+        $this->gameMediator->setLineOfPlay($lineOfPlay);
+
         $this->gameMediator->getRoundManager()->setPlayers(...$players);
 
         $this->gameMediator->changeState(new InProgress($this->gameMediator));
+
+        $gameListener->gameStarted($lineOfPlay, $boneyard, ...$players);
     }
 
     public function drawOrPass(): void

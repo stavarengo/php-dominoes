@@ -6,7 +6,6 @@ namespace Test\Dominoes\GameMediator\DefaultMediator\State;
 
 use Dominoes\GameMediator\DefaultMediator\DefaultMediator;
 use Dominoes\GameMediator\DefaultMediator\State\GameOver;
-use Dominoes\GameMediator\DefaultMediator\State\NotStarted;
 use Dominoes\GameMediator\Exception\GameIsAlreadyOver;
 use Dominoes\GameMediator\GameListenerInterface;
 use Dominoes\GameMediator\GameMediatorInterface;
@@ -61,8 +60,8 @@ class GameOverTest extends TestCase
 
     public function testGetStatus()
     {
-        $state = new NotStarted($this->createStub(DefaultMediator::class));
-        $this->assertEquals(GameMediatorInterface::STATUS_NOT_STARTED, $state->getStatus());
+        $state = new GameOver($this->createStub(DefaultMediator::class));
+        $this->assertEquals(GameMediatorInterface::STATUS_GAME_IS_OVER, $state->getStatus());
     }
 
     public function testGetWinner()

@@ -10,9 +10,16 @@ use Dominoes\LineOfPlay\ConnectionSpot\ConnectionSpotInterface;
 use Dominoes\LineOfPlay\LineOfPlayInterface;
 use Dominoes\Player\PlayerInterface;
 use Dominoes\Tile\TileInterface;
+use Dominoes\Tile\TilesCollectionInterface;
 
 interface GameListenerInterface
 {
+    public function gameStarted(
+        LineOfPlayInterface $lineOfPlay,
+        TilesCollectionInterface $boneyard,
+        PlayerInterface ...$players
+    ): void;
+
     public function playerConnectedTile(
         PlayerInterface $whoPlayed,
         TileInterface $tile,
