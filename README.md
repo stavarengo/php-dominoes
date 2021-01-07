@@ -59,7 +59,7 @@ This is a [Dominoes](https://en.wikipedia.org/wiki/Dominoes) game that allows bo
 - **Draw**: To transfer a *tile* from the *boneyard* to the player's hand.
 - **Boneyard**: Set of *tiles* from which players *draw*.
 
-## Implement rules
+## Rules of this Game
 
 There are many types of [Dominoes games](https://en.wikipedia.org/wiki/List_of_domino_games). This game I implemented 
 here is more close to the [Draw Domino Game](https://en.wikipedia.org/wiki/List_of_domino_games#Draw_Game). Find below 
