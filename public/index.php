@@ -19,6 +19,10 @@ require __DIR__ . '/../vendor/autoload.php';
     /** @var \Psr\Container\ContainerInterface $container */
     $container = include_once __DIR__ . '/../config/container.php';
 
+    $input = getopt('', long_options: ['highestPip::', 'tilesPerPlayer::']);
+    $highestDeckPip = (int)($input['highestPip'] ?? 6);
+    $tilesPerPlayer = (int)($input['tilesPerPlayer'] ?? 7);
+
     $app = $container->get(\Console\Application::class);
-    $app->execute();
+    $app->execute($highestDeckPip, $tilesPerPlayer);
 })();

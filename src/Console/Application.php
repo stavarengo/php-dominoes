@@ -25,15 +25,15 @@ class Application
     ) {
     }
 
-    public function execute()
+    public function execute(int $highestDeckPip, int $tilesPerPlayer)
     {
-        $deck = $this->deckFactory->createDeck(6);
+        $deck = $this->deckFactory->createDeck($highestDeckPip);
 
         $this->mediator->start(
             $this->gameListener,
             $deck,
-            new Player('Alice', $deck->drawRandomTiles(7)),
-            new Player('Bob', $deck->drawRandomTiles(7)),
+            new Player('Alice', $deck->drawRandomTiles($tilesPerPlayer)),
+            new Player('Bob', $deck->drawRandomTiles($tilesPerPlayer)),
         );
 
         while ($this->mediator->getStatus() == GameMediatorInterface::STATUS_IN_PROGRESS) {
@@ -43,7 +43,7 @@ class Application
         if ($winner = $this->mediator->getWinner()) {
             $this->logger->debug(sprintf('%s has won!', $winner->getName()));
         } else {
-            $this->logger->debug('It\'s a tie. Nobody win!');
+            $this->logger->debug('It\'s a tie. Nobody wins!');
         }
     }
 }
